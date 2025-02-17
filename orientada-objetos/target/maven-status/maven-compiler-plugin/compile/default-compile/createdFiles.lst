@@ -1,13 +1,13 @@
 edu\udelp\orientada_objetos\modelo\Circulo.class
 edu\udelp\orientada_objetos\proceso\RectanguloProcess.class
 edu\udelp\orientada_objetos\modelo\Rombo.class
+edu\udelp\orientada_objetos\proceso\RomboProcess.class
+edu\udelp\orientada_objetos\modelo\Triangulo.class
+edu\udelp\orientada_objetos\Figuras.class
 edu\udelp\orientada_objetos\proceso\TrianguloProcess.class
 edu\udelp\orientada_objetos\proceso\RegularNLadosProcess.class
 edu\udelp\orientada_objetos\proceso\CirculoProcess.class
-edu\udelp\orientada_objetos\proceso\RomboProcess.class
-edu\udelp\orientada_objetos\modelo\Triangulo.class
 edu\udelp\orientada_objetos\modelo\RegularNLados.class
 edu\udelp\orientada_objetos\modelo\Cuadrado.class
-edu\udelp\orientada_objetos\Figuras.class
 edu\udelp\orientada_objetos\modelo\Rectangulo.class
 edu\udelp\orientada_objetos\proceso\CuadradoProcess.class
