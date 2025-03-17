@@ -14,7 +14,7 @@ import javafx.scene.control.TextField;
 
 public class RegistroController {
 
-	ArrayList<Usuario> listUsuario=new ArrayList<>();
+	static ArrayList<Usuario> listUsuario=new ArrayList<>();
 	@FXML
 	private ComboBox<String> cbGenero;
 	@FXML
@@ -35,7 +35,7 @@ public class RegistroController {
         cbGenero.getItems().addAll("Masculino", "Femenino", "Prefiero no decir");
         
     }
-    
+    @FXML
     public void onClick(ActionEvent event) {
     	String nombre=txtNombre.getText();
     	String password=txtPassword.getText();
@@ -49,17 +49,22 @@ public class RegistroController {
     	
     	listUsuario.add(new Usuario(nombre,password,des,genero,email,fecha,usuario,estatus));
     	
-    	Alert alert=new Alert(AlertType.ERROR);
-    	alert.setTitle("Bienvenido");
-    	alert.setHeaderText("Usuario: "+usuario);
-    	alert.setContentText("Nombre: "+nombre+
-    			"\nEmail: "+email);
-
-    	alert.showAndWait();
+    	
+    	try {
+			App.setRoot("loginRegistro");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	
     	
     }
     
     
+	public static ArrayList<Usuario> getListUsuario() {
+        return listUsuario;
+    }
     
     
     
