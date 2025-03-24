@@ -1,5 +1,6 @@
 package edu.udelp.foros2;
 
+import com.google.gson.Gson;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,10 +11,20 @@ import java.io.IOException;
 
 
 
+/*
+H2 base de datos
 
+i18n
+ */
 /**
+ *
+ *
+ *
  * JavaFX App
  */
+
+
+
 public class App extends Application {
 
     private static Scene scene;
@@ -36,12 +47,10 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-    	
-    	
-    	
-    	
+
         launch();
-        
+
+
     }
 }
 
@@ -49,7 +58,21 @@ public class App extends Application {
 
 
 
+/*
+        Gson gson=new Gson();
+        //Gson gson=new GsonBuilder().setPrettyPrinting().create();
+        String json="{\"nombre\":\"Luis\""
+                +",\"apellidoPaterno\":\"Ochoa\""
+                +",\"apellidoMaterno\":\"García\""
+                +",\"email\":\"oaalberto@udelp.edu.mx\"}";
 
+        UsuarioDTO usuario=gson.fromJson(json,UsuarioDTO.class);
+        System.out.println(usuario.getNombre());
+        usuario.setNombre("Luis Alberto");
+        json=gson.toJson(usuario);
+        System.out.println(json);
+
+  */
 
 
 

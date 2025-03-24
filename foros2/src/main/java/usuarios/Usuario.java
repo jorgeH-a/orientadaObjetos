@@ -1,12 +1,10 @@
-package edu.udelp.foros2.usuarios;
+package usuarios;
 
 import java.util.ArrayList;
 
 
 
 import javafx.beans.property.SimpleStringProperty;
-
-
 
 
 public class Usuario {

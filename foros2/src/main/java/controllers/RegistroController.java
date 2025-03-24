@@ -1,20 +1,22 @@
-package edu.udelp.foros2.usuarios.controllers;
+package controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
+
 import edu.udelp.foros2.App;
-import edu.udelp.foros2.usuarios.Usuario;
+import edu.udelp.foros2.Convertor;
+import usuarios.Usuario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import usuarios.UsuarioDTO;
 
 public class RegistroController {
 
 	static ArrayList<Usuario> listUsuario=new ArrayList<>();
+
 	@FXML
 	private ComboBox<String> cbGenero;
 	@FXML
@@ -48,8 +50,13 @@ public class RegistroController {
     	
     	
     	listUsuario.add(new Usuario(nombre,password,des,genero,email,fecha,usuario,estatus));
-    	
-    	
+        Convertor.conversorSimpleString();
+
+        Convertor.textoJson();
+        Convertor.getListUsuarioDTO().clear();
+
+
+
     	try {
 			App.setRoot("loginRegistro");
 		} catch (IOException e) {
@@ -67,8 +74,25 @@ public class RegistroController {
     }
     
     
-    
-    
-    
+    /*
+    Gson gson = new Gson();
+
+        // Leer el contenido existente del archivo JSON
+        FileReader reader = new FileReader("personas.json");
+        Type listType = new TypeToken<ArrayList<Persona>>() {}.getType();
+        List<Persona> personas = gson.fromJson(reader, listType);
+        reader.close();
+
+        // Agregar un nuevo objeto al listado
+        Persona nuevaPersona = new Persona("Juan", 30);
+        personas.add(nuevaPersona);
+
+        // Escribir el contenido actualizado nuevamente al archivo
+        FileWriter writer = new FileWriter("personas.json");
+        gson.toJson(personas, writer);
+        writer.close();
+
+        System.out.println("Nuevo objeto añadido exitosamente.");
+    */
 
 }

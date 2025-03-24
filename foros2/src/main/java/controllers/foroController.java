@@ -1,4 +1,4 @@
-package edu.udelp.foros2.usuarios.controllers;
+package controllers;
 
 import java.io.IOException;
 
