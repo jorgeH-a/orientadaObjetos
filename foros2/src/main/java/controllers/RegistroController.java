@@ -11,7 +11,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import usuarios.UsuarioDTO;
 
 public class RegistroController {
 
@@ -50,9 +49,9 @@ public class RegistroController {
     	
     	
     	listUsuario.add(new Usuario(nombre,password,des,genero,email,fecha,usuario,estatus));
-        Convertor.conversorSimpleString();
+        Convertor.conversorSimpleStringUsuario();
 
-        Convertor.textoJson();
+        Convertor.textoJsonUsuario();
         Convertor.getListUsuarioDTO().clear();
 
 
