@@ -2,16 +2,13 @@ package posts;
 
 import comunidad.Comunidad;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleLongProperty;
 
 import javafx.beans.property.SimpleStringProperty;
 import tags.Tags;
 import usuarios.Usuario;
 
 
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Post {
     private final long id;
@@ -26,7 +23,9 @@ public class Post {
     private final SimpleBooleanProperty nsfw;
     private final SimpleBooleanProperty plus18;
     private Comunidad comunidad;
-    private ArrayList<Tags> tags = new ArrayList<>();
+    private  ArrayList<Tags> tags = new ArrayList<>();
+    private final ArrayList comentarios = new ArrayList<>();
+
 
 
 
@@ -74,10 +73,34 @@ public class Post {
         return comunidad;
     }
 
+    public void setComunidad(Comunidad comunidad) {
+        this.comunidad = comunidad;
+    }
+
     public ArrayList<Tags> getTags() {
         return tags;
     }
 
+    public ArrayList getComentarios() {return comentarios;}
+
+
+
+    public Post (long id, Usuario user, String descripcion, String imagen, String archivo, String fecha, boolean nsfw, boolean plus18,Comunidad comunidad,ArrayList<Tags> tags) {
+
+        super();
+        this.id=id;
+        this.usuario=user;
+        this.descripcion=new SimpleStringProperty(descripcion);
+        this.imagen=new SimpleStringProperty(imagen);
+        this.archivo=new SimpleStringProperty(archivo);
+        this.fecha=new SimpleStringProperty(fecha);
+        this.nsfw=new SimpleBooleanProperty(nsfw);
+        this.plus18=new SimpleBooleanProperty(plus18);
+        this.comunidad=comunidad;
+        this.tags=tags;
+
+    }
+    /*
     public Post (long id, Usuario user, String descripcion, String imagen, String archivo, String fecha, boolean nsfw, boolean plus18){
         super();
 
@@ -89,12 +112,8 @@ public class Post {
         this.fecha=new SimpleStringProperty(fecha);
         this.nsfw=new SimpleBooleanProperty(nsfw);
         this.plus18=new SimpleBooleanProperty(plus18);
-
-
-
     }
-
-
+*/
 
 
 

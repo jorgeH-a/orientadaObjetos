@@ -4,9 +4,14 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.ArrayList;
+import java.util.Objects;
 
+import comunidad.Comunidad;
+import comunidad.ComunidadDTO;
+import convertores.ConvertorComunidad;
+import convertores.ConvertorPost;
+import convertores.ConvertorUsuario;
 import edu.udelp.foros2.App;
 import edu.udelp.foros2.Convertor;
 import javafx.application.Platform;
@@ -14,7 +19,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -24,24 +28,38 @@ import javafx.scene.text.TextFlow;
 import posts.PostDTO;
 
 import static controllers.LoginRegistroController.usuarioDTOActual;
-import static edu.udelp.foros2.Convertor.listPostDTO;
+import static convertores.ConvertorPost.listPostDTO;
+import static convertores.ConvertorUsuario.listUsuarioDTO;
+
 
 public class foroController {
     static String rutaArchivoPosts="archivoPosts";
     PostDTO originalPostDTO;
 
+    public static int postId;
     @FXML
     private VBox lugarPosts;
 
     @FXML
     public void initialize() {
         lugarPosts.getChildren().clear();
-        int cantidad= Convertor.jsonTextoPost().size();
-        boolean botonRepost=false;
-        boolean botonRespon=false;
 
-        System.out.println(cantidad);
+
+        ArrayList<PostDTO> postsDTO = ConvertorPost.jsonTextoPost();
+        ArrayList<ComunidadDTO> comunidadDTO= ConvertorComunidad.jsonTextoComunidad();
+        int cantidad = postsDTO.size();
+
+
+
+
+
+
+        boolean botonRepost = false;
+        boolean botonRespon = false;
+
+        int ciclo=0;
         for (int i = 0; i < cantidad; i++) {
+
 
 
             boolean imagenExiste = false;
@@ -50,32 +68,31 @@ public class foroController {
 
             TextFlow textoFlowPost = new TextFlow();
             TextFlow textoFlowRepost = new TextFlow();
-            TextFlow textoFlowResponder = new TextFlow();
-            Text usuario = new Text("Usuario: " + Convertor.jsonTextoPost().get(i).getUsuarioDTO().getUsuario() + "\n");
-            Text descripcion = new Text("Post: " + Convertor.jsonTextoPost().get(i).getDescripcion() + "\n");
-            Text fecha = new Text("Fecha de creacion: " + Convertor.jsonTextoPost().get(i).getFecha() + "\n");
 
-            if (null == Convertor.jsonTextoPost().get(i).getOriginalPost()) {
+            Text usuario = new Text("Usuario: " + postsDTO.get(i).getUsuarioDTO().getUsuario() + "\n");
+            Text descripcion = new Text("Post: " + postsDTO.get(i).getDescripcion() + "\n");
+            Text fecha = new Text("Fecha de creacion: " + postsDTO.get(i).getFecha() + "\n");
+
+            if (null == postsDTO.get(i).getOriginalPost()) {
                 textoFlowPost.getChildren().addAll(usuario, descripcion, fecha);
-                System.out.println(1);
             }
 
 
             ImageView imagen = null;
             Hyperlink enlace = null;
 
-            if (null != Convertor.jsonTextoPost().get(i).getImagen()) {
+            if (null != postsDTO.get(i).getImagen()) {
                 imagenExiste = true;
-                File file = new File(Convertor.jsonTextoPost().get(i).getImagen());
+                File file = new File(postsDTO.get(i).getImagen());
                 imagen = new ImageView(new Image(file.toURI().toString()));
                 imagen.setPreserveRatio(true);
             }
 
 
-            if (null != Convertor.jsonTextoPost().get(i).getArchivo()) {
+            if (null != postsDTO.get(i).getArchivo()) {
                 archivoExiste = true;
-                File archivo = new File(Convertor.jsonTextoPost().get(i).getArchivo());
-                enlace = new Hyperlink(Convertor.jsonTextoPost().get(i).getArchivo());
+                File archivo = new File(postsDTO.get(i).getArchivo());
+                enlace = new Hyperlink(postsDTO.get(i).getArchivo());
                 enlace.setOnAction(event -> {
                     if (archivo.exists()) {
                         try {
@@ -87,25 +104,61 @@ public class foroController {
                 });
             }
 
+            Button btnSeguirUsuario = new Button("Seguir Usuario");
+            int segur=i;
+            btnSeguirUsuario.setOnAction(event -> {
+                listPostDTO=postsDTO;
+                listUsuarioDTO= ConvertorUsuario.jsonTextoUsuario();
+                ArrayList<String> hey=new ArrayList<>();
+                hey.add(listPostDTO.get(segur).getUsuarioDTO().getUsuario());
 
+
+                for (int j=0;j<listUsuarioDTO.size();j++) {
+                    if(Objects.equals(usuarioDTOActual.getUsuario(), listUsuarioDTO.get(j).getUsuario())){
+                        listUsuarioDTO.get(j).getFollowers().add(hey.get(0));
+                        ConvertorUsuario.textoJsonUsuarioModificacion();
+
+
+                        listUsuarioDTO.clear();
+                        listPostDTO.clear();
+                        postsDTO.clear();
+                        ConvertorPost.getListPostDTO().clear();
+                        ConvertorUsuario.getListUsuarioDTO().clear();
+
+                        listUsuarioDTO=ConvertorUsuario.jsonTextoUsuario();
+
+                        break;
+                    }
+                }
+
+
+
+
+                Platform.runLater(() -> {
+                    lugarPosts.getChildren().clear();
+                    initialize();
+                });
+            });
+
+
+//Aqui empieza lo del repost
             Button btnRepostear = new Button("Repostear");
 
             int finalI = i;
             btnRepostear.setOnAction(event -> {
 
 
-
                 //usuario.conversorStringUsuario() Este es el Usuario del paquete usuarios, para guardarlos el el Usuario de Post
 
                 String fechaRepStr = LocalDate.now().toString();
 
-                boolean nsfw = Convertor.jsonTextoPost().get(finalI).isNsfw();
+                boolean nsfw = postsDTO.get(finalI).isNsfw();
 
-                boolean plus18 = Convertor.jsonTextoPost().get(finalI).isPlus18();
+                boolean plus18 = postsDTO.get(finalI).isPlus18();
 
-                listPostDTO.add(new PostDTO(cantidad, usuarioDTOActual, null, null, null, fechaRepStr, nsfw, plus18, Convertor.jsonTextoPost().get(finalI)));
+                listPostDTO.add(new PostDTO(cantidad,comunidadDTO.get(finalI), usuarioDTOActual, null, null, null, fechaRepStr, nsfw, plus18, postsDTO.get(finalI),postsDTO.get(finalI).getTags()));
 
-                Convertor.textoJsonPost();
+                ConvertorPost.textoJsonPost();
 
                 Platform.runLater(() -> {
                     lugarPosts.getChildren().clear();
@@ -115,26 +168,26 @@ public class foroController {
 
             });
 
-            if (null != Convertor.jsonTextoPost().get(i).getOriginalPost()) {
-                Text usuarioRep = new Text("Usuario: " + Convertor.jsonTextoPost().get(i).getUsuarioDTO().getUsuario() + "\n");
-                Text usuarioOri = new Text("Usuario Original: " + Convertor.jsonTextoPost().get(i).getOriginalPost().getUsuarioDTO().getUsuario() + "\n");
-                Text descripcionOri = new Text("Post Original: " + Convertor.jsonTextoPost().get(i).getOriginalPost().getDescripcion() + "\n");
-                Text fechaOri = new Text("Fecha de creacion Original: " + Convertor.jsonTextoPost().get(i).getOriginalPost().getFecha() + "\n");
-                Text fechaRep = new Text("Fecha de reposteo: " + Convertor.jsonTextoPost().get(i).getFecha() + "\n");
+            if (null != postsDTO.get(i).getOriginalPost()) {
+                Text usuarioRep = new Text("Usuario: " + postsDTO.get(i).getUsuarioDTO().getUsuario() + "\n");
+                Text usuarioOri = new Text("Usuario Original: " + postsDTO.get(i).getOriginalPost().getUsuarioDTO().getUsuario() + "\n");
+                Text descripcionOri = new Text("Post Original: " + postsDTO.get(i).getOriginalPost().getDescripcion() + "\n");
+                Text fechaOri = new Text("Fecha de creacion Original: " + postsDTO.get(i).getOriginalPost().getFecha() + "\n");
+                Text fechaRep = new Text("Fecha de reposteo: " + postsDTO.get(i).getFecha() + "\n");
                 textoFlowRepost.getChildren().addAll(usuarioRep, usuarioOri, descripcionOri, fechaOri, fechaRep);
-                System.out.println(2);
-                if (null != Convertor.jsonTextoPost().get(i).getOriginalPost().getImagen()) {
+
+                if (null != postsDTO.get(i).getOriginalPost().getImagen()) {
                     imagenExiste = true;
-                    File file = new File(Convertor.jsonTextoPost().get(i).getOriginalPost().getImagen());
+                    File file = new File(postsDTO.get(i).getOriginalPost().getImagen());
                     imagen = new ImageView(new Image(file.toURI().toString()));
                     imagen.setPreserveRatio(true);
                 }
 
 
-                if (null != Convertor.jsonTextoPost().get(i).getOriginalPost().getArchivo()) {
+                if (null != postsDTO.get(i).getOriginalPost().getArchivo()) {
                     archivoExiste = true;
-                    File archivo = new File(Convertor.jsonTextoPost().get(i).getOriginalPost().getArchivo());
-                    enlace = new Hyperlink(Convertor.jsonTextoPost().get(i).getOriginalPost().getArchivo());
+                    File archivo = new File(postsDTO.get(i).getOriginalPost().getArchivo());
+                    enlace = new Hyperlink(postsDTO.get(i).getOriginalPost().getArchivo());
                     enlace.setOnAction(event -> {
                         if (archivo.exists()) {
                             try {
@@ -148,172 +201,108 @@ public class foroController {
 
 
             }
-
-            Button btnResponder = new Button("Responder");
-
+//Aqui termina el repost
 
 
-            int finalIResponder = i;
-            btnResponder.setOnAction(event -> {
+//Aqui empieza lo de comentarios
+            Button btnComentarios = new Button("Comentarios");
+            int comenI=i;
+            btnComentarios.setOnAction(event -> {
+                postId = comenI;
+                try {
+
+                    App.setRoot("comentarios");
+
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
 
 
+            });
+//Aqui termina
 
-                //usuario.conversorStringUsuario() Este es el Usuario del paquete usuarios, para guardarlos el el Usuario de Post
+            HBox hboxBotones = new HBox();
 
-                String fechaRepStr = LocalDate.now().toString();
+            Button btnBuena = new Button("Buena Calificacion");
+            Button btnMala = new Button("Mala Calificacion");
 
-                boolean nsfw = Convertor.jsonTextoPost().get(finalIResponder).isNsfw();
+            Text textoBuenas = new Text();
+            Text textoMalas = new Text();
 
-                boolean plus18 = Convertor.jsonTextoPost().get(finalIResponder).isPlus18();
+            Long calificacionesBuenas = postsDTO.get(finalI).getCalificacionesBuenas();
+            Long calificacionesMalas = postsDTO.get(finalI).getCalificacionesMalas();
 
+            textoBuenas.setText("Buenas: " + (calificacionesBuenas != null ? calificacionesBuenas : 0));
+            textoMalas.setText("Malas: " + (calificacionesMalas != null ? calificacionesMalas : 0));
 
-                TextInputDialog dialog = new TextInputDialog();
-                dialog.setTitle("Responder al post");
-                Optional<String> result = dialog.showAndWait();
-                result.ifPresent(respuestaTexto -> {
+            btnBuena.setOnAction(event -> {
+                long buenas = (postsDTO.get(finalI).getCalificacionesBuenas() != null ? postsDTO.get(finalI).getCalificacionesBuenas() : 0) + 1;
 
+                postsDTO.get(finalI).setCalificacionesBuenas(buenas);
 
-                    listPostDTO.add(new PostDTO(cantidad, usuarioDTOActual, respuestaTexto, null, null, fechaRepStr, nsfw, plus18, Convertor.jsonTextoPost().get(finalIResponder)));
+                textoBuenas.setText("Buenas: " + buenas);
 
-                    Convertor.textoJsonPost();
+                ConvertorPost.textoJsonPost();
 
-
-
-                    Platform.runLater(() -> {
-                        lugarPosts.getChildren().clear();
-                        initialize();
-                    });
-
-
-                });
             });
 
-                if (null != Convertor.jsonTextoPost().get(i).getOriginalPost()) {
-                    Text usuarioRep = new Text("Usuario: " + Convertor.jsonTextoPost().get(i).getUsuarioDTO().getUsuario() + "\n");
-                    Text usuarioOri = new Text("Usuario Original: " + Convertor.jsonTextoPost().get(i).getOriginalPost().getUsuarioDTO().getUsuario() + "\n");
-                    Text descripcionRep = new Text("Post Respuesta: " + Convertor.jsonTextoPost().get(i).getDescripcion() + "\n");
-                    Text descripcionOri = new Text("Post Original: " + Convertor.jsonTextoPost().get(i).getOriginalPost().getDescripcion() + "\n");
-                    Text fechaOri = new Text("Fecha de creacion Original: " + Convertor.jsonTextoPost().get(i).getOriginalPost().getFecha() + "\n");
-                    Text fechaRep = new Text("Fecha de reposteo: " + Convertor.jsonTextoPost().get(i).getFecha() + "\n");
-                    textoFlowResponder.getChildren().addAll(usuarioRep, usuarioOri, descripcionOri, descripcionRep, fechaOri, fechaRep);
-                    System.out.println(3);
-                    if (null != Convertor.jsonTextoPost().get(i).getOriginalPost().getImagen()) {
-                        imagenExiste = true;
-                        File file = new File(Convertor.jsonTextoPost().get(i).getOriginalPost().getImagen());
-                        imagen = new ImageView(new Image(file.toURI().toString()));
-                        imagen.setPreserveRatio(true);
-                    }
+            btnMala.setOnAction(event -> {
+                Long malas = (postsDTO.get(finalI).getCalificacionesMalas() != null ? postsDTO.get(finalI).getCalificacionesMalas() : 0) + 1;
+
+                postsDTO.get(finalI).setCalificacionesMalas(malas);
+
+                textoMalas.setText("Malas: " + malas);
+                ConvertorPost.textoJsonPost();
 
 
-                    if (null != Convertor.jsonTextoPost().get(i).getOriginalPost().getArchivo()) {
-                        archivoExiste = true;
-                        File archivo = new File(Convertor.jsonTextoPost().get(i).getOriginalPost().getArchivo());
-                        enlace = new Hyperlink(Convertor.jsonTextoPost().get(i).getOriginalPost().getArchivo());
-                        enlace.setOnAction(event -> {
-                            if (archivo.exists()) {
-                                try {
-                                    Desktop.getDesktop().open(archivo);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
+            });
+            hboxBotones.getChildren().addAll(btnBuena, textoBuenas, btnMala, textoMalas);
 
 
+    if (imagenExiste && archivoExiste) {
 
-                    }
+        if (null != postsDTO.get(i).getOriginalPost() && null == postsDTO.get(i).getDescripcion()) {
+            lugarPosts.getChildren().addAll(textoFlowRepost,btnSeguirUsuario,btnComentarios, imagen, enlace, hboxBotones);
 
+        } else {
+            lugarPosts.getChildren().addAll(textoFlowPost,btnSeguirUsuario, btnRepostear, btnComentarios, imagen, enlace, hboxBotones);
 
-                }
+        }
 
+    } else if (imagenExiste && !archivoExiste) {
+        if (null != postsDTO.get(i).getOriginalPost() && null == postsDTO.get(i).getDescripcion()) {
+            lugarPosts.getChildren().addAll(textoFlowRepost,btnSeguirUsuario, btnComentarios, imagen, hboxBotones);
 
-                HBox hboxBotones = new HBox();
+        } else {
+            lugarPosts.getChildren().addAll(textoFlowPost,btnSeguirUsuario, btnRepostear, btnComentarios, imagen, hboxBotones);
 
-                Button btnBuena = new Button("Buena Calificacion");
-                Button btnMala = new Button("Mala Calificacion");
-
-                Text textoBuenas = new Text();
-                Text textoMalas = new Text();
-
-                Long calificacionesBuenas = Convertor.jsonTextoPost().get(finalI).getCalificacionesBuenas();
-                Long calificacionesMalas = Convertor.jsonTextoPost().get(finalI).getCalificacionesMalas();
-
-                textoBuenas.setText("Buenas: " + (calificacionesBuenas != null ? calificacionesBuenas : 0));
-                textoMalas.setText("Malas: " + (calificacionesMalas != null ? calificacionesMalas : 0));
-
-                btnBuena.setOnAction(event -> {
-                    long buenas = (Convertor.jsonTextoPost().get(finalI).getCalificacionesBuenas() != null ? Convertor.jsonTextoPost().get(finalI).getCalificacionesBuenas() : 0) + 1;
-
-                    Convertor.jsonTextoPost().get(finalI).setCalificacionesBuenas(buenas);
-
-                    textoBuenas.setText("Buenas: " + buenas);
-
-                    Convertor.textoJsonPost();
-
-                });
+        }
 
 
-                btnMala.setOnAction(event -> {
-                    Long malas = (Convertor.jsonTextoPost().get(finalI).getCalificacionesMalas() != null ? Convertor.jsonTextoPost().get(finalI).getCalificacionesMalas() : 0) + 1;
+    } else if (!imagenExiste && archivoExiste) {
+        if (null != postsDTO.get(i).getOriginalPost() && null == postsDTO.get(i).getDescripcion()) {
+            lugarPosts.getChildren().addAll(textoFlowRepost,btnSeguirUsuario, btnComentarios, enlace, hboxBotones);
 
-                    Convertor.jsonTextoPost().get(finalI).setCalificacionesMalas(malas);
+        } else {
+            lugarPosts.getChildren().addAll(textoFlowPost,btnSeguirUsuario, btnRepostear, btnComentarios, enlace, hboxBotones);
 
-                    textoMalas.setText("Malas: " + malas);
-                    Convertor.textoJsonPost();
+        }
 
+    } else {
+        if (null != postsDTO.get(i).getOriginalPost() && null == postsDTO.get(i).getDescripcion()) {
+            lugarPosts.getChildren().addAll(textoFlowRepost,btnSeguirUsuario, btnComentarios, hboxBotones);
 
-                });
-                hboxBotones.getChildren().addAll(btnBuena, textoBuenas, btnMala, textoMalas);
+        } else {
+            lugarPosts.getChildren().addAll(textoFlowPost,btnSeguirUsuario, btnRepostear, btnComentarios, hboxBotones);
 
+        }
 
-                if (imagenExiste && archivoExiste) {
+    }
 
-
-                    if(null != Convertor.jsonTextoPost().get(i).getOriginalPost()&&null==Convertor.jsonTextoPost().get(i).getDescripcion()){
-                        lugarPosts.getChildren().addAll(textoFlowRepost, btnRepostear, btnResponder, imagen, enlace, hboxBotones);
-                    } else if (null != Convertor.jsonTextoPost().get(i).getOriginalPost()&&null!=Convertor.jsonTextoPost().get(i).getDescripcion()) {
-                        lugarPosts.getChildren().addAll(textoFlowResponder, btnRepostear, btnResponder, imagen, enlace, hboxBotones);
-                    }else {
-                        lugarPosts.getChildren().addAll(textoFlowPost, btnRepostear, btnResponder, imagen, enlace, hboxBotones);
-                    }
+        }
 
 
-                } else if (imagenExiste && !archivoExiste) {
-                    if(null != Convertor.jsonTextoPost().get(i).getOriginalPost()&&null==Convertor.jsonTextoPost().get(i).getDescripcion()){
-                        lugarPosts.getChildren().addAll(textoFlowRepost, btnRepostear, btnResponder, imagen, hboxBotones);
-                    } else if (null != Convertor.jsonTextoPost().get(i).getOriginalPost()&&null!=Convertor.jsonTextoPost().get(i).getDescripcion()) {
-                        lugarPosts.getChildren().addAll(textoFlowResponder, btnRepostear, btnResponder, imagen, hboxBotones);
-                    }else {
-                        lugarPosts.getChildren().addAll(textoFlowPost, btnRepostear, btnResponder, imagen, hboxBotones);
-                    }
-
-
-                } else if (!imagenExiste && archivoExiste) {
-                    if(null != Convertor.jsonTextoPost().get(i).getOriginalPost()&&null==Convertor.jsonTextoPost().get(i).getDescripcion()){
-                        lugarPosts.getChildren().addAll(textoFlowRepost, btnRepostear, btnResponder, enlace, hboxBotones);
-                    } else if (null != Convertor.jsonTextoPost().get(i).getOriginalPost()&&null!=Convertor.jsonTextoPost().get(i).getDescripcion()) {
-                        lugarPosts.getChildren().addAll(textoFlowResponder, btnRepostear, btnResponder, enlace, hboxBotones);
-                    }else {
-                        lugarPosts.getChildren().addAll(textoFlowPost, btnRepostear, btnResponder, enlace, hboxBotones);
-                    }
-
-
-                } else {
-                    if(null != Convertor.jsonTextoPost().get(i).getOriginalPost()&&null==Convertor.jsonTextoPost().get(i).getDescripcion()){
-                        lugarPosts.getChildren().addAll(textoFlowRepost, btnRepostear, btnResponder, hboxBotones);
-                    } else if (null != Convertor.jsonTextoPost().get(i).getOriginalPost()&&null!=Convertor.jsonTextoPost().get(i).getDescripcion()) {
-                        lugarPosts.getChildren().addAll(textoFlowResponder, btnRepostear, btnResponder, hboxBotones);
-                    }else {
-                        lugarPosts.getChildren().addAll(textoFlowPost, btnRepostear, btnResponder, hboxBotones);
-                    }
-                }
-
-
-
-
-
-
-         }
     }
 
     @FXML
@@ -326,6 +315,48 @@ public class foroController {
         }
 
 
+    }
+    @FXML
+    public void onComunidad(ActionEvent event) {
+        try {
+            App.setRoot("comunidades");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
+    }
+    @FXML
+    public void onSeguirUser(ActionEvent event) {
+        try {
+            App.setRoot("usuariosSeguidos");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
+    }
+    @FXML
+    public void onPerfil(ActionEvent event) {
+        try {
+            App.setRoot("perfil");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
+    }
+    @FXML
+    private void onBack(ActionEvent event) {
+        try {
+            App.setRoot("loginRegistro");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 	 
 }

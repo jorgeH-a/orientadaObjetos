@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
+import convertores.ConvertorUsuario;
 import edu.udelp.foros2.App;
 import edu.udelp.foros2.Convertor;
 import usuarios.Usuario;
@@ -11,10 +12,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import usuarios.UsuarioDTO;
 
 public class RegistroController {
 
 	static ArrayList<Usuario> listUsuario=new ArrayList<>();
+    static ArrayList<UsuarioDTO> listUsuarioDTO=new ArrayList<>();
 
 	@FXML
 	private ComboBox<String> cbGenero;
@@ -47,14 +50,28 @@ public class RegistroController {
     	String usuario=txtUsuario.getText();
     	String estatus="Activo";
     	
-    	
+    	boolean principal=false;
+
     	listUsuario.add(new Usuario(nombre,password,des,genero,email,fecha,usuario,estatus));
-        Convertor.conversorSimpleStringUsuario();
+        ConvertorUsuario.conversorSimpleStringUsuario();
 
-        Convertor.textoJsonUsuario();
-        Convertor.getListUsuarioDTO().clear();
+        ConvertorUsuario.textoJsonUsuario();
+        ConvertorUsuario.getListUsuarioDTO().clear();
 
+        for(UsuarioDTO usuarioDTO:listUsuarioDTO){
+            if (usuarioDTO.getUsuario() == "Principal") {
+                principal = true;
+                break;
+            }
+        }
 
+        if(!principal){
+            listUsuario.add(new Usuario("nombre","no","principal","no","no","nunca","Principal","Activo"));
+            ConvertorUsuario.conversorSimpleStringUsuario();
+
+            ConvertorUsuario.textoJsonUsuario();
+            ConvertorUsuario.getListUsuarioDTO().clear();
+        }
 
     	try {
 			App.setRoot("loginRegistro");

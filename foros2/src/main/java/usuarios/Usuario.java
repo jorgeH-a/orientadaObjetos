@@ -17,8 +17,8 @@ public class Usuario {
 	private SimpleStringProperty redesSociales;
 	private SimpleStringProperty usuario;
 	private SimpleStringProperty status;
-	private ArrayList followers=new ArrayList();
-	private ArrayList comunidades=new ArrayList();
+	private ArrayList<String> followers=new ArrayList<>();
+	private ArrayList<String> comunidades=new ArrayList<>();
 	
 	
 
@@ -58,16 +58,24 @@ public class Usuario {
 		return status;
 	}
 
-	public ArrayList getFollowersProperty() {
+	public ArrayList<String> getFollowersProperty() {
 		return followers;
 	}
 
-	public ArrayList getComunidadesProperty() {
+	public ArrayList<String> getComunidadesProperty() {
 		return comunidades;
 	}
 
-	public Usuario(String nombre, String password,String description,String genero, String email,
-			String fechaNacimiento, String usuario, String status) {
+	public void setFollowers(ArrayList<String> followers) {
+		this.followers = followers;
+	}
+
+	public void setComunidades(ArrayList<String> comunidades) {
+		this.comunidades = comunidades;
+	}
+
+	public Usuario(String nombre, String password, String description, String genero, String email,
+				   String fechaNacimiento, String usuario, String status) {
 		super();
 		this.nombre = new SimpleStringProperty(nombre);
 		this.password= new SimpleStringProperty(password);

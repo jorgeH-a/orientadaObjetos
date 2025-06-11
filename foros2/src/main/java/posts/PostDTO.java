@@ -1,13 +1,12 @@
 package posts;
 
 
-import usuarios.Usuario;
+
+import comunidad.ComunidadDTO;
+import tags.TagsDTO;
 import usuarios.UsuarioDTO;
-
-
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
+
 
 public class PostDTO {
 
@@ -23,11 +22,30 @@ public class PostDTO {
         //private ArrayList calificaciones=new ArrayList();
         private boolean nsfw;
         private boolean plus18;
-        private boolean comunidad;
-        private ArrayList tags=new ArrayList();
+        private ComunidadDTO comunidadDTO;
+        private ArrayList<TagsDTO> tagsDTO=new ArrayList<>();
+        private ArrayList<String> comentarios=new ArrayList<>();
 
-        public PostDTO(long id, UsuarioDTO user, String descripcion, String imagen, String archivo, String fecha, boolean nsfw, boolean plus18, PostDTO originalPost){
+        public PostDTO(long id,ComunidadDTO comunidadDTO, UsuarioDTO user, String descripcion, String imagen, String archivo,
+                       String fecha, boolean nsfw, boolean plus18, PostDTO originalPost,ArrayList<TagsDTO> tagsDTO) {
             super();
+                this.id=id;
+                this.comunidadDTO=comunidadDTO;
+                this.usuario=user;
+                this.descripcion=descripcion;
+                this.imagen=imagen;
+                this.archivo=archivo;
+                this.fecha=fecha;
+                this.nsfw=nsfw;
+                this.plus18=plus18;
+                this.originalPost=originalPost;
+                this.tagsDTO=tagsDTO;
+
+        }
+        /*
+        public PostDTO(long id, UsuarioDTO user, String descripcion, String imagen, String archivo,
+                       String fecha, boolean nsfw, boolean plus18, PostDTO originalPost) {
+                super();
                 this.id=id;
                 this.usuario=user;
                 this.descripcion=descripcion;
@@ -38,7 +56,9 @@ public class PostDTO {
                 this.plus18=plus18;
                 this.originalPost=originalPost;
 
+
         }
+        */
 
         public long getId() {
                 return id;
@@ -79,12 +99,12 @@ public class PostDTO {
                 return plus18;
         }
 
-        public boolean isComunidad() {
-                return comunidad;
+        public ComunidadDTO isComunidad() {
+                return comunidadDTO;
         }
 
-        public ArrayList getTags() {
-                return tags;
+        public ArrayList<TagsDTO> getTags() {
+                return tagsDTO;
         }
 
         public void setId(long id) {
@@ -127,12 +147,16 @@ public class PostDTO {
                 this.plus18 = plus18;
         }
 
-        public void setComunidad(boolean comunidad) {
-                this.comunidad = comunidad;
+        public ComunidadDTO getComunidadDTO() {
+                return comunidadDTO;
         }
 
-        public void setTags(ArrayList tags) {
-                this.tags = tags;
+        public void setComunidad(ComunidadDTO comunidad) {
+                this.comunidadDTO = comunidad;
+        }
+
+        public void setTags(ArrayList<TagsDTO> tagsDTO) {
+                this.tagsDTO = tagsDTO;
         }
 
         public Long getCalificacionesMalas() {
@@ -141,5 +165,13 @@ public class PostDTO {
 
         public void setCalificacionesMalas(Long calificacionesMalas) {
                 this.calificacionesMalas = calificacionesMalas;
+        }
+
+        public ArrayList<String> getComentarios() {
+                return comentarios;
+        }
+
+        public void setComentarios(ArrayList comentarios) {
+                this.comentarios = comentarios;
         }
 }

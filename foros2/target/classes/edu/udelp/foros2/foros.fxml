@@ -10,8 +10,11 @@
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
          <children>
-            <Button layoutY="29.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="175.0" text="Comunidades" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <Button layoutY="29.0" mnemonicParsing="false" onAction="#onComunidad" prefHeight="29.0" prefWidth="175.0" text="Comunidades" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
             <Button mnemonicParsing="false" onAction="#onPost" prefHeight="29.0" prefWidth="175.0" text="Crear Post" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <Button layoutY="58.0" mnemonicParsing="false" onAction="#onSeguirUser" prefHeight="25.0" prefWidth="146.0" text="Usuarios Seguidos" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <Button layoutY="83.0" mnemonicParsing="false" onAction="#onPerfil" prefHeight="25.0" prefWidth="146.0" text="Ver Perfil" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <Button layoutY="372.0" mnemonicParsing="false" onAction="#onBack" prefHeight="25.0" prefWidth="146.0" text="Salir" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
          </children></AnchorPane>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="401.0" prefWidth="417.0">
          <children>

@@ -10,7 +10,7 @@ import javafx.scene.control.TextField;
 import usuarios.Usuario;
 import usuarios.UsuarioDTO;
 
-import static edu.udelp.foros2.Convertor.jsonTextoUsuario;
+import static convertores.ConvertorUsuario.jsonTextoUsuario;
 
 
 public class LoginRegistroController {
@@ -37,13 +37,22 @@ public class LoginRegistroController {
              if (usuarioDTO.getUsuario().equals(usuarioActual)
                      && usuarioDTO.getPassword().equals(passwordActual)) {
 				 usuarioDTOActual=usuarioDTO;
+				 try {
+					 App.setRoot("foros");
+				 } catch (IOException e) {
+					 // TODO Auto-generated catch block
+					 e.printStackTrace();
+				 }
 
+				 /*
                  try {
                      App.setRoot("foros");
                  } catch (IOException e) {
                      // TODO Auto-generated catch block
                      e.printStackTrace();
                  }
+
+				 */
              }
          }
 
@@ -54,7 +63,11 @@ public class LoginRegistroController {
 				 usuarioDTOActual.getFechaNacimiento(),usuarioDTOActual.getUsuario(),usuarioDTOActual.getStatus());
 		return usuario;
 	 }
-
+	public static Usuario conversorStringUsuarioAfuera(UsuarioDTO usuarioDTO){
+		Usuario usuario=new Usuario(usuarioDTO.getNombre(),usuarioDTO.getPassword(),usuarioDTO.getDescription(),usuarioDTO.getGenero(),usuarioDTO.getEmail(),
+				usuarioDTO.getFechaNacimiento(),usuarioDTO.getUsuario(),usuarioDTO.getStatus());
+		return usuario;
+	}
 	 @FXML
 	 public void onClickR(ActionEvent event) {
 		 try {

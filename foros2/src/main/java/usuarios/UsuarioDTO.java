@@ -15,8 +15,8 @@ public class UsuarioDTO {
     private String redesSociales;
     private String usuario;
     private String status;
-    private ArrayList followers=new ArrayList();
-    private ArrayList comunidades=new ArrayList();
+    private ArrayList<String> followers=new ArrayList<>();
+    private ArrayList<String> comunidades=new ArrayList<>();
 
     public UsuarioDTO(String nombre, String password,String description,String genero, String email,
                    String fechaNacimiento, String usuario, String status) {
@@ -105,19 +105,19 @@ public class UsuarioDTO {
         this.status = status;
     }
 
-    public ArrayList getFollowers() {
+    public ArrayList<String> getFollowers() {
         return followers;
     }
 
-    public void setFollowers(ArrayList followers) {
+    public void setFollowers(ArrayList<String> followers) {
         this.followers = followers;
     }
 
-    public ArrayList getComunidades() {
+    public ArrayList<String> getComunidades() {
         return comunidades;
     }
 
-    public void setComunidades(ArrayList comunidades) {
+    public void setComunidades(ArrayList<String > comunidades) {
         this.comunidades = comunidades;
     }
 }
