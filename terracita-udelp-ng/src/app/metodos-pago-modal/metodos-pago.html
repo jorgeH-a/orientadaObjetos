@@ -3,13 +3,13 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th scope="col">{{"categories.name" | transloco}}</th>
-      <th scope="col">{{"categories.description" | transloco}}</th>
+      <th scope="col">{{"metodos-pago.name" | transloco}}</th>
+      <th scope="col">{{"metodos-pago.description" | transloco}}</th>
       <th scope="col">&nbsp;</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let c of categorias">
+    <tr *ngFor="let c of metodosPago">
       <td>{{c.nombre}}</td>
       <td>{{c.descripcion}}</td>
       <td> 
@@ -19,13 +19,13 @@
    
   </tbody>
 </table>
-<div class="num-records">{{categorias.length}} {{"labels.num-records" | transloco}}</div>
+<div class="num-records">{{metodosPago.length}} {{"labels.num-records" | transloco}}</div>
 
 <!--Modal-->
-<app-categoria-modal [showModal]="showModal" 
-[modalTitle]="modalTitle" [data]="categoria" 
+<app-metodo-pago-modal [showModal]="showModal" 
+[modalTitle]="modalTitle" [data]="metodoPago" 
 (closeModalEvent)="closeModalEvent()" 
-(saveEvent)="saveEvent($event)"></app-categoria-modal>
+(saveEvent)="saveEvent($event)"></app-metodo-pago-modal>
 
 <app-message [showModal]="showModalMessage" [messageTitle]="modalTitleMessage"
 [messageBody]="messageBody" (aceptar)="closeMessageModal($event)" [uri]="uri"></app-message>

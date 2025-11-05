@@ -11,7 +11,6 @@ import { CierreCaja } from './cierre-caja/cierre-caja';
 import { Compras } from './compras/compras';
 import { Home } from './home/home';
 import { Inventario } from './inventario/inventario';
-import { MetodosPago } from './metodos-pago/metodos-pago';
 import { OtrosMovimientos } from './otros-movimientos/otros-movimientos';
 import { Productos } from './productos/productos';
 import { Proveedores } from './proveedores/proveedores';
@@ -22,6 +21,10 @@ import { UnidadesMedida } from './unidades-medida/unidades-medida';
 import { Ventas } from './ventas/ventas';
 import { MovimientoInventario } from './movimiento-inventario/movimiento-inventario';
 import { CategoriaModalComponent } from './categorias/categoria-modal/categoria-modal.component';
+import { MessageComponent } from './message/message.component';
+import { MetodoPagoModalComponent } from './metodos-pago-modal/metodo-pago-modal/metodo-pago-modal.component';
+import { MetodosPago } from './metodos-pago-modal/metodos-pago';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -30,12 +33,15 @@ import { CategoriaModalComponent } from './categorias/categoria-modal/categoria-
     App,
     Categorias,
     CategoriaModalComponent,
+    MessageComponent,
+    MetodosPago,
+    MetodoPagoModalComponent,
    /* CierreCaja,
     AperturaCaja,
     Compras,
     Home,
     Inventario,
-    MetodosPago,
+    
     OtrosMovimientos,
     Productos,
     Proveedores,
@@ -51,7 +57,9 @@ import { CategoriaModalComponent } from './categorias/categoria-modal/categoria-
     BrowserModule,
     HttpClientModule,
     RouterModule.forRoot(routes),
-    TranslocoRootModule
+    TranslocoRootModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   bootstrap: [
     App

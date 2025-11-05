@@ -16,3 +16,14 @@
     height: 22px;
     position: absolute;
 }
+.modal-background {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.modal-header {
+    background-color: #288df3;
+    color: #ffffff;
+
+}
+.btn.close{
+    color: #ffffff;
+}

@@ -27,13 +27,30 @@
         "edit":"Editar",
         "delete":"Eliminar",
         "save":"Guardar",
-        "cancel":"Cancelar"
+        "cancel":"Cancelar",
+        "aceptar": "aceptar"
     },
-    "categories":{
+    "categorias":{
         "name":"Nombre",
-        "description":"Descripción"
+        "description":"Descripción",
+        "add-category": "Agregar Categoria",
+        "edit-category": "Editar Categoria"
+
+    },
+     "metodos-pago":{
+        "name":"Nombre",
+        "description":"Descripción",
+        "add-metodo-pago": "Agregar Método de Pago",
+        "edit-metodo-pago": "Editar Método de Pago"
+
     },
     "labels":{
-        "num-records":"Número de registros"
+        "num-records":"Número de registros",
+        "required-field":"Este campo es obligatorio"
+    },
+    "messages":{
+        "sucess":"Exito",
+        "save-sucess":"Se guardo exitosamente"
     }
+
 }
