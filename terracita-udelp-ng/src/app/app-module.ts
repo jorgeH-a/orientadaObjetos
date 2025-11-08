@@ -13,6 +13,7 @@ import { Home } from './home/home';
 import { Inventario } from './inventario/inventario';
 import { OtrosMovimientos } from './otros-movimientos/otros-movimientos';
 import { Productos } from './productos/productos';
+import { ProductoModalComponent } from './productos/producto-modal/producto-modal.component';
 import { Proveedores } from './proveedores/proveedores';
 import { Usuarios } from './usuarios/usuarios';
 import { PuntoVenta } from './punto-venta/punto-venta';
@@ -22,9 +23,10 @@ import { Ventas } from './ventas/ventas';
 import { MovimientoInventario } from './movimiento-inventario/movimiento-inventario';
 import { CategoriaModalComponent } from './categorias/categoria-modal/categoria-modal.component';
 import { MessageComponent } from './message/message.component';
-import { MetodoPagoModalComponent } from './metodos-pago-modal/metodo-pago-modal/metodo-pago-modal.component';
-import { MetodosPago } from './metodos-pago-modal/metodos-pago';
+import { MetodoPagoModalComponent } from './metodos-pago/metodo-pago-modal/metodo-pago-modal.component';
+import { MetodosPago } from './metodos-pago/metodos-pago';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 
 
 
@@ -36,6 +38,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MessageComponent,
     MetodosPago,
     MetodoPagoModalComponent,
+    Productos,
+    ProductoModalComponent,
+
    /* CierreCaja,
     AperturaCaja,
     Compras,
@@ -43,7 +48,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     Inventario,
     
     OtrosMovimientos,
-    Productos,
+    
     Proveedores,
     Usuarios,
     PuntoVenta,

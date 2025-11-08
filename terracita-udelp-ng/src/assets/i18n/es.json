@@ -44,6 +44,15 @@
         "edit-metodo-pago": "Editar Método de Pago"
 
     },
+    "productos":{
+        "name":"Nombre",
+        "price":"Precio",
+        "stock":"Existencia",
+        "category":"Categoría",
+        "status":"Estado",
+        "add-product":"Agregar Producto",
+        "edit-product":"Editar Producto"
+    },
     "labels":{
         "num-records":"Número de registros",
         "required-field":"Este campo es obligatorio"
@@ -51,6 +60,10 @@
     "messages":{
         "sucess":"Exito",
         "save-sucess":"Se guardo exitosamente"
+    },
+    "comandos":{
+        "cmd":"ng g i _class/metodo-pago",
+        "cmd1":"ng g s _service/metodo-pago",
+        "cmd2":"ng g i metodos-pago/metodo-pago-modal.component"
     }
-
 }

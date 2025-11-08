@@ -4,7 +4,7 @@ import { Productos } from './productos/productos';
 import { Categorias } from './categorias/categorias';
 import { UnidadesMedida } from './unidades-medida/unidades-medida';
 import { Proveedores } from './proveedores/proveedores';
-import { MetodosPago } from './metodos-pago-modal/metodos-pago';
+import { MetodosPago } from './metodos-pago/metodos-pago';
 import { Compras } from './compras/compras';
 import { Ventas } from './ventas/ventas';
 import { Inventario } from './inventario/inventario';
